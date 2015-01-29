@@ -1,0 +1,13 @@
+Package: RIPOpenCV
+Type: Package
+Title: R Image Processing with OpenCV
+Version: 0.4
+Date: 2015-01-29
+Author: Kaustav Nandy <kaustav.ndyy@gmail.com>
+Maintainer: Kaustav Nandy <kaustav.ndyy@gmail.com>
+Description: Aim of this package is to use the OpenCV library to perform image processing tasks in R
+License: GPL-3
+Imports: Rcpp (>= 0.11.0), RcppArmadillo (>= 0.4.000.2)
+Depends: Rcpp (>= 0.11.0), RcppArmadillo (>= 0.4.000.2)
+LinkingTo: Rcpp, RcppArmadillo
+Packaged: 2014-12-30 18:48:58 UTC; nandy

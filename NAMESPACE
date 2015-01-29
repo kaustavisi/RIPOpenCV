@@ -1,0 +1,3 @@
+useDynLib(RIPOpenCV)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
