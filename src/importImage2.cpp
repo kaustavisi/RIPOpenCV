@@ -29,8 +29,7 @@ Rcpp::List importImage(std::vector<std::string> infile, int type = 0)
     else {
 	Rprintf("Unknown image type. Gray image imported");
 	return convertUCMat_CV2RCPP(readImage(f, 0));
-    }
-	
+    }	
 }
 
 
@@ -45,13 +44,13 @@ void writeImage(Rcpp::List imgList, Rcpp::CharacterVector outFile)
 Rcpp::List r2r(Rcpp::List imgList)
 {
     cv::Mat outImg;
-    outImg = convertUCList_RCPP2CV(imgList);
-    return convertUCMat_CV2RCPP(outImg);
+    outImg = convertFList_RCPP2CV(imgList);
+    return convertMat_CV2RCPP(outImg);
 }
 
 RCPP_MODULE(R2R) {
-    function("importImage", &importImage, "Transfer");
-    function("writeImage", &writeImage, "Transfer");
+    function("importImage", &importImage, "Import Image");
+    function("writeImage", &writeImage, "Save image in a file");
     function("r2r", &r2r, "check");
 }
 
