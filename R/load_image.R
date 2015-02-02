@@ -1,15 +1,10 @@
 
 ## mio <- Module("R2R", PACKAGE = "RIPOpenCV")
 mi <- Module("R2R", PACKAGE = "RIPOpenCV")
-## mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
 ## mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
 ## mmorph <- Module("Morph", PACKAGE = "RIPOpenCV")
-
-
-## R2R_trans <- function(inFileName, outFileName) {
-##     mod$R2R(inFileName, outFileName)
-## }
-
+mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
 
 
 ## box_blur <- function(inFileName, outFileName, blursize) {

@@ -21,7 +21,6 @@ Rcpp::List convertMat_CV2RCPP(cv::Mat M)
 	return convertIMat_CV2RCPP(M);
     else 
 	::Rf_error("Cannot convert");
-
 }
 
 /*********************************************/
