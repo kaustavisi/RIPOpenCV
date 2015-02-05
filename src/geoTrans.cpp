@@ -2,13 +2,16 @@
 
 using namespace Rcpp;
 using namespace cv;
+
 /* Resizing generic geometrical transformation to an image */
+/* Interpolation methods are given by the following constants */
 /****** INTER_NEAREST == 0 ******/
 /****** INTER_LINEAR == 1 ******/
 /****** INTER_CUBIC == 2 ******/
 /****** INTER_AREA == 3 ******/
 /****** INTER_LANCZOS4 == 4  ******/
 /*******************************************************/
+
 Rcpp::List imresize(Rcpp::List imgList, Rcpp::NumericVector dsize_, 
 		    double fx, double fy, int interpolation)
 {

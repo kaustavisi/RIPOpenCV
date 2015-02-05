@@ -17,6 +17,7 @@ Rcpp::List convertDMat_CV2RCPP(cv::Mat);
 Rcpp::List convertMat_CV2RCPP(cv::Mat);
 
 cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix);
+cv::Mat convertList_RCPP2CV(Rcpp::List);
 cv::Mat convertUCList_RCPP2CV(Rcpp::List);
 cv::Mat convertFList_RCPP2CV(Rcpp::List);
 cv::Mat convertDList_RCPP2CV(Rcpp::List);

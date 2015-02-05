@@ -3,7 +3,7 @@
 mi <- Module("R2R", PACKAGE = "RIPOpenCV")
 mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
 mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
-## mmorph <- Module("Morph", PACKAGE = "RIPOpenCV")
+mmorph <- Module("Morph", PACKAGE = "RIPOpenCV")
 mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
 mhist <- Module("hist", PACKAGE = "RIPOpenCV")
 
