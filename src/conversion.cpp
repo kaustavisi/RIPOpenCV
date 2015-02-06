@@ -5,22 +5,51 @@ using namespace cv;
 /* Conversion of OpenCV matrix to RCPP NumericMatrix and return as a list */
 Rcpp::List convertMat_CV2RCPP(cv::Mat M)
 {
-    if (M.depth() == 0)
-	return convertUCMat_CV2RCPP(M);
-    else if (M.depth() == 5)
-	return convertFMat_CV2RCPP(M);
-    else if (M.depth() == 6)
-	return convertDMat_CV2RCPP(M);
-    else if (M.depth() == 1)
-	return convertCMat_CV2RCPP(M);
-    else if (M.depth() == 2)
-	return convertUSMat_CV2RCPP(M);
-    else if (M.depth() == 3)
-	return convertSMat_CV2RCPP(M);
-    else if (M.depth() == 4)
-	return convertIMat_CV2RCPP(M);
-    else 
+    Rcpp::List ans;
+    // if (M.depth() == 0)
+    // 	return convertUCMat_CV2RCPP(M);
+    // else if (M.depth() == 5)
+    // 	return convertFMat_CV2RCPP(M);
+    // else if (M.depth() == 6)
+    // 	return convertDMat_CV2RCPP(M);
+    // else if (M.depth() == 1)
+    // 	return convertCMat_CV2RCPP(M);
+    // else if (M.depth() == 2)
+    // 	return convertUSMat_CV2RCPP(M);
+    // else if (M.depth() == 3)
+    // 	return convertSMat_CV2RCPP(M);
+    // else if (M.depth() == 4)
+    // 	return convertIMat_CV2RCPP(M);
+    // else 
+    // 	::Rf_error("Cannot convert");
+
+    switch (M.depth()) {
+    case 0: 
+	ans = convertUCMat_CV2RCPP(M);
+	break;
+    case 5:
+	ans = convertFMat_CV2RCPP(M);
+	break;
+    case 6:
+	ans = convertDMat_CV2RCPP(M);
+	break;
+    case 1:
+	ans = convertCMat_CV2RCPP(M);
+	break;
+    case 2:
+	ans = convertUSMat_CV2RCPP(M);
+	break;
+    case 3:
+	ans = convertSMat_CV2RCPP(M);
+	break;
+    case 4:
+	ans = convertIMat_CV2RCPP(M);
+	break;
+    default:
 	::Rf_error("Cannot convert");
+    }
+    ans.attr("class") = "rip";
+    return ans;
 }
 
 /*********************************************/

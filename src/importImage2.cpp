@@ -21,15 +21,11 @@ cv::Mat readImage(std::string imfile, int typ) {
 Rcpp::List importImage(std::vector<std::string> infile, int type = 0)
 {
     std::string f = infile[0];
-
-    if(type == 0) 
-	return convertUCMat_CV2RCPP(readImage(f, 0));
-    else if (type == 1)
-	return convertUCMat_CV2RCPP(readImage(f, 1));
-    else {
-	Rprintf("Unknown image type. Gray image imported");
-	return convertUCMat_CV2RCPP(readImage(f, 0));
-    }	
+    if (type != 0 && type != 1) {
+	Rprintf("Unknown image type. Importing as grayscale.");
+	type = 0;
+    }
+    return convertMat_CV2RCPP(readImage(f, type));
 }
 
 
