@@ -66,3 +66,96 @@ filter2D <- function(img, depth, kern, anchor=c(-1,-1), delta=0)
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
     mblur$filter2d(img, depth, kern, anchor, delta)
 }
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title Performs 2-D convolution
+##' @param img rip object to be convoluted
+##' @param kern convolution kernel
+##' @param type It can be one of the three values:
+##' \item{full}{full two dimensional convolution}
+##' \item{valid}{convolution without using the zero-padded edges}
+##' \item{same}{central part of the convolution, same as the dimension of img$Data}
+##' @return Convolved image as rip object
+##' @author Kaustav Nandy
+conv2D <- function(img, kern, type=c("full","valid","same"))
+{
+    itype <- switch(type, full=-1, same=0, valid=1, 0) 
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$conv2(img, kern, itype)
+}
+
+##' Returns filter coefficients for computing spatial image derivatives
+##'
+##' .. content for \details{} ..
+##' @title Get derivative kernel 
+##' @param dx deivative order with respect to x
+##' @param dy derivative order with respect to y
+##' @param ksize Apperture size. It can be 1, 3, 5 or 7.
+##' @param normalize Flag indicating whether to normalize (scale down) the filter coefficients or not. 
+##' @param ktype  Type of filter coefficients, should be 5 (32 bit float) or 6 (64 bit float i.e. double).
+##' @return List of two:
+##' \itemize{
+##' \item{kernel.x}{rip object of row filter coefficients}
+##' \item{kernel.y}{rip object of column filter coefficients}
+##' }
+##' @author Kaustav Nandy
+getDerivKernel <- function(dx, dy, ksize,
+                           normalize, ktype)
+{
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$derivKernel(dx, dy, ksize, normalize, ktype)
+}
+
+##' Calculate Gaussian filter coefficients
+##'
+##' .. content for \details{} ..
+##' @title Returns Gaussian filter coefficients
+##' @param ksize Aperture size. It should be odd and positive.
+##' @param sigma Gaussian standard deviation. If it is non-positive, it is computed from ksize as sigma = 0.3*((ksize-1)*0.5 - 1) + 0.8 .
+##' @param ktype Type of filter coefficients. It can be 5 or 6.
+##' @return ksize x 1 matrix of Gaussian filter coefficients.
+##' @author Kaustav Nandy
+getGaussianKernel <- function(ksize, sigma, ktype)
+{
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$getGaussKern(ksize, sigma, ktype);
+}
+
+##' Calculate Gabon Filter Coefficients
+##'
+##' .. content for \details{} ..
+##' @title Gabon filter coefficients
+##' @param ksize size of filter returned
+##' @param sigma Standard deviation of the gaussian envelope
+##' @param theta Orientation of the normal to the parallel stripes of a Gabor function
+##' @param lambd Wavelength of the sinusoidal factor
+##' @param gamma Spatial aspect ratio
+##' @param psi Phase offset
+##' @param ktype Type of filter coefficients. It can be 5 or 6
+##' @return 
+##' @author Kaustav Nandy
+getGaborKernel <- function(ksize, sigma, theta, lambd, gamma,
+                           psi=pi * .5, ktype=6)
+{
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$getGaborKern(ksize, sigma, theta, lambd, gamma,
+                           psi, ktype)
+}
+
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title 
+##' @param img 
+##' @param ksize 
+##' @return 
+##' @author Kaustav Nandy
+
+medianBlur <- function(img, ksize=3)
+{
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$mediBlur(img, ksize)
+}
