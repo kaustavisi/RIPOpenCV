@@ -6,7 +6,11 @@ mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
 mmorph <- Module("Morph", PACKAGE = "RIPOpenCV")
 mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
 mhist <- Module("hist", PACKAGE = "RIPOpenCV")
-
+mpyr <- Module("pyr", PACKAGE = "RIPOpenCV")
+mrla <- Module("rla", PACKAGE = "RIPOpenCV")
+mdft <- Module("Dft", PACKAGE = "RIPOpenCV")
+mconv2direct <- Module("conv2direct", PACKAGE = "RIPOpenCV")
+mrobsp <- Module("robsp", PACKAGE = "RIPOpenCV")
 ## box_blur <- function(inFileName, outFileName, blursize) {
 ##     mod <- Module("Blur", PACKAGE = "RIPOpenCV")
 ##     mod$boxBlur(inFileName, outFileName, blursize)
