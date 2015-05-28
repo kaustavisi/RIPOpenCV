@@ -101,13 +101,13 @@ Rcpp::List getGaussKern(int ksize, double sigma, int ktype)
 }
 
 
-Rcpp::List getGaborKern(Rcpp::NumericVector ksize_, double sigma, double theta, double lambd, double gamma, double psi, int ktype)
-{
-    cv::Mat outImg;
-    std::vector<int> ksize = as< std::vector<int> >(ksize_);
-    outImg = getGaborKernel(Size(ksize.at(0), ksize.at(1)), sigma, theta, lambd, gamma, psi, ktype); 
-    return convertMat_CV2RCPP(outImg);
-}
+// Rcpp::List getGaborKern(Rcpp::NumericVector ksize_, double sigma, double theta, double lambd, double gamma, double psi, int ktype)
+// {
+//     cv::Mat outImg;
+//     std::vector<int> ksize = as< std::vector<int> >(ksize_);
+//     outImg = getGaborKernel(Size(ksize.at(0), ksize.at(1)), sigma, theta, lambd, gamma, psi, ktype); 
+//     return convertMat_CV2RCPP(outImg);
+// }
 
 Rcpp::List mediBlur(Rcpp::List imgList, int ksize)
 {
@@ -127,7 +127,7 @@ RCPP_MODULE(Blur)
     function("filter2d", &filter2d, "2d filtering");
     function("derivKernel", &derivKernel, "Derivative Kernel");
     function("getGaussKern", &getGaussKern, "Gaussian Kernel");
-    function("getGaborKern", &getGaborKern, "Gabor Kernel");
+    // function("getGaborKern", &getGaborKern, "Gabor Kernel");
     function("mediBlur", &mediBlur, "Median blur");
     function("conv2", &conv2, "2d Convolution");
 }

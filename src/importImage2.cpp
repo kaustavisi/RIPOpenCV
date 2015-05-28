@@ -12,7 +12,8 @@ cv::Mat readImage(std::string imfile, int typ) {
     if (!image.data) {
 	throw std::range_error("Could not open the file");
     }
-    Rprintf("channels=%d, type=%d, dims=%d, depth=%d",image.channels(), image.type(), image.dims, image.depth());
+    // Rprintf("channels=%d, type=%d, dims=%d, depth=%d",
+    // 	    image.channels(), image.type(), image.dims, image.depth());
     return image;
 }
 

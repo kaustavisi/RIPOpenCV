@@ -41,7 +41,6 @@ filter.normBox <- function(img, size)
 ##' @param sigmaY Gaussian kernel standard deviation in Y direction. If \code{sigmaY} is 0 it is set to be equal to \code{sigmaX}. If both sigmas are zero, they are computed from \code{size}
 ##' @return 
 ##' @author Kaustav Nandy
-
 filter.gaussian <- function(img, size, sigmaX, sigmaY)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
@@ -56,11 +55,13 @@ filter.gaussian <- function(img, size, sigmaX, sigmaY)
 ##' @param img rip object of 1 or 3 channels
 ##' @param depth desired depth of the output image
 ##' @param kern Convolution kernel. A rip object with 1 channel.
-##' @param anchor  anchor of the kernel that indicates the relative position of a filtered point within the kernel; the anchor should lie within the kernel. Value (-1,-1) means the anchor is an the kernel center.
+##' @param anchor anchor of the kernel that indicates the relative
+##' position of a filtered point within the kernel; the anchor should
+##' lie within the kernel. Value (-1,-1) means the anchor is an the
+##' kernel center.
 ##' @param delta optional value added to the filtered pixels. Default value is 0.
 ##' @return convolved rip object
 ##' @author Kaustav Nandy
-
 filter2D <- function(img, depth, kern, anchor=c(-1,-1), delta=0)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
