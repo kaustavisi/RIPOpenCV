@@ -14,7 +14,7 @@ print.rip <- function(x, ...)
 }
 
 
-image.rip <- function(x, ...)
+image.rip <- function(x, ..., rescale = FALSE)
 {
     if (x$Dimension[3] == 1)
         m <- x$Data
@@ -25,6 +25,7 @@ image.rip <- function(x, ...)
         m <- aperm(m, c(1, 3, 2))
         m <- m[,,3:1]
     }
+    if (rescale) m[] <- 255 * (m - min(m)) / (max(m) - min(m))
     m <- as.raster(m, max = 255)
     opar <- par(mar = c(3, 3, 1, 1) + 0.1)
     on.exit(par(opar))

@@ -117,17 +117,17 @@ Rcpp::List mediBlur(Rcpp::List imgList, int ksize)
     return (convertMat_CV2RCPP(outImg));
 }
 
-Rcpp::List sqBoxFilter(Rcpp::List imgList, int ddepth, 
-		       Rcpp::NumericVector ksize_, Rcpp::NumericVector anchor_, 
-		       bool normalize)
-{
-    cv::Mat outImg, M;
-    M = convertList_RCPP2CV(imgList);
-    std::vector<int> ksize = as< std::vector<int> >(ksize_);
-    std::vector<int> anchor = as< std::vector<int> >(anchor_);
-    cv::sqrBoxFilter(M, outImg, ddepth, Size(ksize.at(0), ksize.at(1)), Point(anchor.at(0), anchor.at(1)), normalize);
-    return (convertMat_CV2RCPP(outImg));
-}
+// Rcpp::List sqBoxFilter(Rcpp::List imgList, int ddepth, 
+// 		       Rcpp::NumericVector ksize_, Rcpp::NumericVector anchor_, 
+// 		       bool normalize)
+// {
+//     cv::Mat outImg, M;
+//     M = convertList_RCPP2CV(imgList);
+//     std::vector<int> ksize = as< std::vector<int> >(ksize_);
+//     std::vector<int> anchor = as< std::vector<int> >(anchor_);
+//     cv::sqrBoxFilter(M, outImg, ddepth, Size(ksize.at(0), ksize.at(1)), Point(anchor.at(0), anchor.at(1)), normalize);
+//     return (convertMat_CV2RCPP(outImg));
+// }
 
 RCPP_MODULE(Blur) 
 {
@@ -141,5 +141,5 @@ RCPP_MODULE(Blur)
     function("getGaborKern", &getGaborKern, "Gabor Kernel");
     function("mediBlur", &mediBlur, "Median blur");
     function("conv2", &conv2, "2d Convolution");
-    function("sqBoxFilter", &sqBoxFilter, "Square Box Filter");
+    // function("sqBoxFilter", &sqBoxFilter, "Square Box Filter");
 }
