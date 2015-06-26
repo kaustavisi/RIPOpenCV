@@ -43,7 +43,6 @@ Rcpp::List cornerMinEVal(Rcpp::List imgList, int blockSize, int ksize)
     cv::Mat outImg(M.rows, M.cols, CV_32FC1);
     cv::cornerMinEigenVal(M, outImg, blockSize, ksize);
     return (convertMat_CV2RCPP(outImg));
-
 }
 
 
