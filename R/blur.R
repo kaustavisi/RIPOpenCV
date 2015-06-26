@@ -41,7 +41,7 @@ filter.normBox <- function(img, size)
 ##' @param sigmaY Gaussian kernel standard deviation in Y direction. If \code{sigmaY} is 0 it is set to be equal to \code{sigmaX}. If both sigmas are zero, they are computed from \code{size}
 ##' @return 
 ##' @author Kaustav Nandy
-filter.gaussian <- function(img, size, sigmaX, sigmaY)
+filter.gaussian <- function(img, size, sigmaX = 0, sigmaY = 0)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
     mblur$gaussianBlur(img, size, sigmaX, sigmaY)
