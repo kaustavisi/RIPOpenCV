@@ -11,12 +11,12 @@
 ##' @return Deblurred rip image.
 ##' @author Kaustav Nandy
 
-rlalgo <- function(origImage, initImage, kernel, iter, ind)
+rlalgo <- function(origImage, initImage, kernel, iter)
 {
     mrla <- Module("rla", PACKAGE = "RIPOpenCV")
     if(sum(dim(origImage$Data) != dim(initImage$data)) != 0)
         stop("initImage should be of same size as origImage")
     if((origImage$Dimension)[3] != 1)
         stop("Only single channel images are allowed")
-    mrla$RLA(origImage, initImage, kernel, iter, ind)
+    mrla$RLA(origImage, initImage, kernel, iter)
 }
