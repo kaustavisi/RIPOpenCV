@@ -7,11 +7,13 @@ cv::Mat rlUpdate(cv::Mat oimg, cv::Mat cimg, cv::Mat mask);
 cv::Mat rlUpdate2(cv::Mat oimg, cv::Mat cimg, cv::Mat mask);
 cv::Mat rlUpdate3(cv::Mat oimg, cv::Mat cimg, cv::Mat mask);
 
-Rcpp::List RLA(Rcpp::List imgList, Rcpp::List initImg, Rcpp::List kernel, int iter, int ind)
+Rcpp::NumericMatrix RLA(Rcpp::NumericMatrix imgMat,
+			Rcpp::NumericMatrix initImg,
+			Rcpp::NumericMatrix kernel, int iter, int ind)
 {
-    cv::Mat Y = convertList_RCPP2CV(imgList);
-    cv::Mat L = convertList_RCPP2CV(initImg);
-    cv::Mat K = convertList_RCPP2CV(kernel);
+    cv::Mat Y = convertMat_RCPP2CV(imgMat);
+    cv::Mat L = convertMat_RCPP2CV(initImg);
+    cv::Mat K = convertMat_RCPP2CV(kernel);
 
     int i;
 

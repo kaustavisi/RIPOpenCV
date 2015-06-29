@@ -2,10 +2,11 @@
 
 using namespace Rcpp;
 using namespace cv;
-/* Conversion of OpenCV matrix to RCPP NumericMatrix and return as a list */
-Rcpp::List convertMat_CV2RCPP(cv::Mat M)
+
+/* Conversion of OpenCV matrix to RCPP NumericMatrix (with some attributes) */
+Rcpp::NumericMatrix convertMat_CV2RCPP(cv::Mat M)
 {
-    Rcpp::List ans;
+    Rcpp::NumericMatrix ans;
     // if (M.depth() == 0)
     // 	return convertUCMat_CV2RCPP(M);
     // else if (M.depth() == 5)
@@ -48,6 +49,11 @@ Rcpp::List convertMat_CV2RCPP(cv::Mat M)
     default:
 	::Rf_error("Cannot convert");
     }
+    ans.attr("cvdim") = NumericVector::create(Rcpp::Named("nrow") = M.rows,
+					      Rcpp::Named("ncol") = M.cols,
+					      Rcpp::Named("nchannel") = M.channels(),
+					      Rcpp::Named("type") = M.type(),
+					      Rcpp::Named("depth") = M.depth());
     ans.attr("class") = "rip";
     return ans;
 }
@@ -61,15 +67,14 @@ Rcpp::List convertMat_CV2RCPP(cv::Mat M)
 /* image depth == 0 */
 /***********************************/
 
-Rcpp::List convertUCMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertUCMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<uchar>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
@@ -77,15 +82,14 @@ Rcpp::List convertUCMat_CV2RCPP(cv::Mat M)
 /* image depth == 1 */
 /***********************************/
 
-Rcpp::List convertCMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertCMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<char>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
@@ -94,30 +98,28 @@ Rcpp::List convertCMat_CV2RCPP(cv::Mat M)
 /******** image depth == 2 *********/
 /***********************************/
 
-Rcpp::List convertUSMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertUSMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<ushort>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 /* Converting OpenCV signed short int Mat to NumericMatrix */
 /******** image depth == 3 *********/
 /***********************************/
 
-Rcpp::List convertSMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertSMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<short>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
@@ -125,15 +127,14 @@ Rcpp::List convertSMat_CV2RCPP(cv::Mat M)
 /******** image depth == 4 *********/
 /***********************************/
 
-Rcpp::List convertIMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertIMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<int>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
@@ -141,30 +142,28 @@ Rcpp::List convertIMat_CV2RCPP(cv::Mat M)
 /******** image depth == 5 *********/
 /***********************************/
 
-Rcpp::List convertFMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertFMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<float>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
 /* Converting OpenCV double Mat to NumericMatrix */
 /******** image depth == 6 *********/
 /***********************************/
-Rcpp::List convertDMat_CV2RCPP(cv::Mat M)
+Rcpp::NumericMatrix convertDMat_CV2RCPP(cv::Mat M)
 {
     NumericMatrix x(M.rows, M.cols * M.channels());
     for (int i = 0; i < M.rows; i++)
 	for (int j = 0; j < M.cols * M.channels(); j++) {
 	    x(i, j) = M.at<double>(i,j);
 	}
-    return Rcpp::List::create(Rcpp::Named("Data") = x, 
-			      Rcpp::Named("Dimension") = NumericVector::create(M.rows, M.cols, M.channels(), M.type(), M.depth()));
+    return x;
 }
 
 
@@ -174,83 +173,55 @@ Rcpp::List convertDMat_CV2RCPP(cv::Mat M)
 /* Conversion of RCPP NumericMatrix containing allowed type of data to OpenCV matrix */
 /***********************************************************************************/
 /***********************************************************************************/
-cv::Mat convertList_RCPP2CV(Rcpp::List x)
+cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix x)
 {
-    std::vector<int> dims = as< std::vector<int> >((x["Dimension"]));
-    if (dims[4] == 0)
-	return convertUCList_RCPP2CV(x);
-    else if (dims[4] == 5)
-	return convertFList_RCPP2CV(x);
-    else if (dims[4] == 6)
-	return convertDList_RCPP2CV(x);
-    else 
-	::Rf_error("Cannot convert");
-}
-
-/* Converting NumericMatrix of type to OpenCV Mat*/
-
-
-cv::Mat convertUCList_RCPP2CV(Rcpp::List x)
-{
-    int i, j;
-    std::vector<int> dims = as< std::vector<int> >((x["Dimension"]));
+    std::vector<int> dims = as< std::vector<int> > (x.attr("cvdim"));
     int nRow = dims[0];
     int nCol = dims[1];
     int nChannel = dims[2];
     int effCol = nCol * nChannel;
-
     cv::Mat M(nRow, nCol, dims[3]); 
-    NumericMatrix lx = as<NumericMatrix>(x["Data"]);
+    if (dims[4] == 0)
+	convertUCMat_RCPP2CV(x, M, nRow, effCol);
+    else if (dims[4] == 5)
+	convertFMat_RCPP2CV(x, M, nRow, effCol);
+    else if (dims[4] == 6)
+	convertDMat_RCPP2CV(x, M, nRow, effCol);
+    else 
+	::Rf_error("Cannot convert");
+    return M;
+}
+
+/* Converting NumericMatrix of various types to OpenCV Mat*/
+
+void convertUCMat_RCPP2CV(Rcpp::NumericMatrix lx, cv::Mat M, int nRow, int effCol)
+{
+    int i, j;
     for(i = 0; i < nRow; i++) {
 	for(j = 0; j < effCol; j++) {
 	    M.at<uchar>(i, j) = lx(i, j);
 	}
     }
-    return M;
 }
 
-
-/* Converting NumericMatrix of type float to OpenCV Mat*/
-
-
-cv::Mat convertFList_RCPP2CV(Rcpp::List x)
+void convertFMat_RCPP2CV(Rcpp::NumericMatrix lx, cv::Mat M, int nRow, int effCol)
 {
     int i, j;
-    std::vector<int> dims = as< std::vector<int> >((x["Dimension"]));
-    int nRow = dims[0];
-    int nCol = dims[1];
-    int nChannel = dims[2];
-    int effCol = nCol * nChannel;
-
-    cv::Mat M(nRow, nCol, dims[3]); 
-    NumericMatrix lx = as<NumericMatrix>(x["Data"]);
     for(i = 0; i < nRow; i++) {
 	for(j = 0; j < effCol; j++) {
 	    M.at<float>(i, j) = lx(i, j);
 	}
     }
-    return M;
 }
 
-/* Converting NumericMatrix of type double to OpenCV Mat*/
-
-
-cv::Mat convertDList_RCPP2CV(Rcpp::List x)
+void convertDMat_RCPP2CV(Rcpp::NumericMatrix lx, cv::Mat M, int nRow, int effCol)
 {
     int i, j;
-    std::vector<int> dims = as< std::vector<int> >((x["Dimension"]));
-    int nRow = dims[0];
-    int nCol = dims[1];
-    int nChannel = dims[2];
-    int effCol = nCol * nChannel;
-
-    cv::Mat M(nRow, nCol, dims[3]); 
-    NumericMatrix lx = as<NumericMatrix>(x["Data"]);
     for(i = 0; i < nRow; i++) {
 	for(j = 0; j < effCol; j++) {
 	    M.at<double>(i, j) = lx(i, j);
 	}
     }
-    return M;
 }
+
 

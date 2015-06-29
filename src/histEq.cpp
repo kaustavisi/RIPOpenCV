@@ -4,9 +4,9 @@ using namespace Rcpp;
 using namespace cv;
 
 
-Rcpp::List histEq(Rcpp::List imgList)
+Rcpp::NumericMatrix histEq(Rcpp::NumericMatrix imgMat)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
     equalizeHist(M, outImg);
     return(convertMat_CV2RCPP(outImg));

@@ -7,20 +7,21 @@
 #include <opencv2/highgui/highgui_c.h>
 #include <iostream>
 
-Rcpp::List convertUCMat_CV2RCPP(cv::Mat);
-Rcpp::List convertCMat_CV2RCPP(cv::Mat);
-Rcpp::List convertUSMat_CV2RCPP(cv::Mat);
-Rcpp::List convertSMat_CV2RCPP(cv::Mat);
-Rcpp::List convertIMat_CV2RCPP(cv::Mat);
-Rcpp::List convertFMat_CV2RCPP(cv::Mat);
-Rcpp::List convertDMat_CV2RCPP(cv::Mat);
-Rcpp::List convertMat_CV2RCPP(cv::Mat);
-
+/* main interface */
+Rcpp::NumericMatrix convertMat_CV2RCPP(cv::Mat);
 cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix);
-cv::Mat convertList_RCPP2CV(Rcpp::List);
-cv::Mat convertUCList_RCPP2CV(Rcpp::List);
-cv::Mat convertFList_RCPP2CV(Rcpp::List);
-cv::Mat convertDList_RCPP2CV(Rcpp::List);
 
+/* helper functions */
+Rcpp::NumericMatrix convertUCMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertCMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertUSMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertSMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertIMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertFMat_CV2RCPP(cv::Mat);
+Rcpp::NumericMatrix convertDMat_CV2RCPP(cv::Mat);
+
+void convertUCMat_RCPP2CV(Rcpp::NumericMatrix, cv::Mat, int, int);
+void convertFMat_RCPP2CV(Rcpp::NumericMatrix, cv::Mat, int, int);
+void convertDMat_RCPP2CV(Rcpp::NumericMatrix, cv::Mat, int, int);
 
 #endif

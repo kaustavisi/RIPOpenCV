@@ -19,7 +19,7 @@ cv::Mat readImage(std::string imfile, int typ) {
 
 
 /* Import image as grayscale */
-Rcpp::List importImage(std::vector<std::string> infile, int type = 0)
+Rcpp::NumericMatrix importImage(std::vector<std::string> infile, int type = 0)
 {
     std::string f = infile[0];
     if (type != 0 && type != 1) {
@@ -30,25 +30,17 @@ Rcpp::List importImage(std::vector<std::string> infile, int type = 0)
 }
 
 
-void writeImage(Rcpp::List imgList, Rcpp::CharacterVector outFile) 
+void writeImage(Rcpp::NumericMatrix imgMat, Rcpp::CharacterVector outFile) 
 {
-    cv::Mat outImg = convertUCList_RCPP2CV(imgList);
+    cv::Mat outImg = convertMat_RCPP2CV(imgMat);
     std::string outfile = as<std::string>(outFile);
     cv::imwrite(outfile, outImg);
     return;
 }
 
-Rcpp::List r2r(Rcpp::List imgList)
-{
-    cv::Mat outImg;
-    outImg = convertFList_RCPP2CV(imgList);
-    return convertMat_CV2RCPP(outImg);
-}
-
 RCPP_MODULE(R2R) {
     function("importImage", &importImage, "Import Image");
     function("writeImage", &writeImage, "Save image in a file");
-    function("r2r", &r2r, "check");
 }
 
 

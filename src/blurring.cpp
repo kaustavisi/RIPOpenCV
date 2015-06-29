@@ -4,52 +4,53 @@ using namespace cv;
 using namespace Rcpp;
 
 /* Bilateral filter of an image */
-Rcpp::List bilatFilter(Rcpp::List imgList, int d, double sigmaCol, double sigmaSpace)
+Rcpp::NumericMatrix bilatFilter(Rcpp::NumericMatrix imgMat, int d, double sigmaCol, double sigmaSpace)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
     bilateralFilter(M, outImg, d, sigmaCol, sigmaSpace);
     return (convertMat_CV2RCPP(outImg));
 }
 
-Rcpp::List normBoxBlur(Rcpp::List imgList, Rcpp::NumericVector size_) 
+Rcpp::NumericMatrix normBoxBlur(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector size_) 
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
     std::vector<int> size = as< std::vector<int> >(size_);
     blur(M, outImg, Size(size.at(0), size.at(1)));
     return (convertMat_CV2RCPP(outImg));
 }
 
-Rcpp::List gaussianBlur(Rcpp::List imgList,
-			Rcpp::NumericVector size_, 
-			double sigmaX = 0, double sigmaY = 0) 
+Rcpp::NumericMatrix gaussianBlur(Rcpp::NumericMatrix imgMat,
+				 Rcpp::NumericVector size_, 
+				 double sigmaX = 0, double sigmaY = 0) 
 {
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat M, outImg;
-    M = convertList_RCPP2CV(imgList);
+    M = convertMat_RCPP2CV(imgMat);
     GaussianBlur(M, outImg, Size(size.at(0), size.at(1)), sigmaX, sigmaY);
     return (convertMat_CV2RCPP(outImg));
 }
 
-Rcpp::List boxBlur(Rcpp::List imgMat, 
-		   Rcpp::NumericVector size_) 
+Rcpp::NumericMatrix boxBlur(Rcpp::NumericMatrix imgMat,
+			    Rcpp::NumericVector size_) 
 {
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat M, outImg;
-    M = convertList_RCPP2CV(imgMat);
+    M = convertMat_RCPP2CV(imgMat);
     boxFilter(M, outImg, -1, Size(size.at(0), size.at(1)));
     return (convertMat_CV2RCPP(outImg));
 }
 
 
 /* Apply 2d filter to an image given a kerel */
-Rcpp::List filter2d(Rcpp::List imgMat, int ddepth, 
-		    Rcpp::List kernel_, IntegerVector anchor_, double delta)
+Rcpp::NumericMatrix filter2d(Rcpp::NumericMatrix imgMat, int ddepth, 
+			     Rcpp::NumericMatrix kernel_,
+			     IntegerVector anchor_, double delta)
 {
     cv::Mat outImg, M, kernel;
-    M = convertList_RCPP2CV(imgMat);
-    kernel = convertList_RCPP2CV(kernel_);
+    M = convertMat_RCPP2CV(imgMat);
+    kernel = convertMat_RCPP2CV(kernel_);
     std::vector<int> anchor = as< std::vector<int> >(anchor_);
     filter2D(M, outImg, ddepth, kernel, cvPoint(anchor[0], anchor[1]), delta);
     return (convertMat_CV2RCPP(outImg));
@@ -58,11 +59,11 @@ Rcpp::List filter2d(Rcpp::List imgMat, int ddepth,
 /* 2 dimensional convolution. Similar to conv2 function of matlab */
 /* Modified from the code of Timm Linder. It can be found in http://blog.timmlinder.com/2011/07/opencv-equivalent-to-matlabs-conv2-function/ */
 
-Rcpp::List conv2(Rcpp::List imgMat, Rcpp::List kernel_, int type = 0)
+Rcpp::NumericMatrix conv2(Rcpp::NumericMatrix imgMat, Rcpp::NumericMatrix kernel_, int type = 0)
 {
     cv::Mat outImg, M, kernel, fkern;
-    M = convertList_RCPP2CV(imgMat);
-    kernel = convertList_RCPP2CV(kernel_);
+    M = convertMat_RCPP2CV(imgMat);
+    kernel = convertMat_RCPP2CV(kernel_);
     Mat source = M;
     if(type == -1) {
 	source = Mat();
@@ -87,13 +88,13 @@ Rcpp::List derivKernel(int dx, int dy, int ksize, bool normalize, int ktype)
 {
     cv::Mat kx, ky;
     getDerivKernels(kx, ky, dx, dy, ksize, normalize, ktype);
-    return Rcpp::List::create(Rcpp::Named("kernel.x")=convertMat_CV2RCPP(kx), 
-			      Rcpp::Named("kernel.y")=convertMat_CV2RCPP(ky));   
+    return Rcpp::List::create(Rcpp::Named("kernel.x") = convertMat_CV2RCPP(kx), 
+			      Rcpp::Named("kernel.y") = convertMat_CV2RCPP(ky));   
 }
 
 /* Get Gaussian Kernel */
 
-Rcpp::List getGaussKern(int ksize, double sigma, int ktype)
+Rcpp::NumericMatrix getGaussKern(int ksize, double sigma, int ktype)
 {
     cv::Mat outImg;
     outImg = getGaussianKernel(ksize, sigma, ktype);
@@ -101,7 +102,7 @@ Rcpp::List getGaussKern(int ksize, double sigma, int ktype)
 }
 
 
-Rcpp::List getGaborKern(Rcpp::NumericVector ksize_, double sigma, double theta, double lambd, double gamma, double psi, int ktype)
+Rcpp::NumericMatrix getGaborKern(Rcpp::NumericVector ksize_, double sigma, double theta, double lambd, double gamma, double psi, int ktype)
 {
     cv::Mat outImg;
     std::vector<int> ksize = as< std::vector<int> >(ksize_);
@@ -109,20 +110,20 @@ Rcpp::List getGaborKern(Rcpp::NumericVector ksize_, double sigma, double theta, 
     return convertMat_CV2RCPP(outImg);
 }
 
-Rcpp::List mediBlur(Rcpp::List imgList, int ksize)
+Rcpp::NumericMatrix mediBlur(Rcpp::NumericMatrix imgMat, int ksize)
 {
     cv::Mat outImg, M;
-    M = convertList_RCPP2CV(imgList);
+    M = convertMat_RCPP2CV(imgMat);
     medianBlur(M, outImg, ksize);
     return (convertMat_CV2RCPP(outImg));
 }
 
-// Rcpp::List sqBoxFilter(Rcpp::List imgList, int ddepth, 
+// Rcpp::NumericMatrix sqBoxFilter(Rcpp::NumericMatrix imgMat, int ddepth, 
 // 		       Rcpp::NumericVector ksize_, Rcpp::NumericVector anchor_, 
 // 		       bool normalize)
 // {
 //     cv::Mat outImg, M;
-//     M = convertList_RCPP2CV(imgList);
+//     M = convertMat_RCPP2CV(imgMat);
 //     std::vector<int> ksize = as< std::vector<int> >(ksize_);
 //     std::vector<int> anchor = as< std::vector<int> >(anchor_);
 //     cv::sqrBoxFilter(M, outImg, ddepth, Size(ksize.at(0), ksize.at(1)), Point(anchor.at(0), anchor.at(1)), normalize);

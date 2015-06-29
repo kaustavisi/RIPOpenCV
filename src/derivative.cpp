@@ -3,9 +3,10 @@
 using namespace cv;
 using namespace Rcpp;
 
-Rcpp::List scharr(Rcpp::List imgList, int ddepth, int dx, int dy, double scale, double delta)
+Rcpp::NumericMatrix scharr(Rcpp::NumericMatrix imgMat, int ddepth,
+			   int dx, int dy, double scale, double delta)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
     cv::Scharr(M, outImg, ddepth, dx, dy, scale, delta);
     return (convertMat_CV2RCPP(outImg));
@@ -13,14 +14,14 @@ Rcpp::List scharr(Rcpp::List imgList, int ddepth, int dx, int dy, double scale, 
 
 
 
-Rcpp::List sepFilter(Rcpp::List imgList, int ddepth, 
-		     Rcpp::List kernelX_, Rcpp::List kernelY_, 
-		     Rcpp::NumericVector anchor_, double delta)
+Rcpp::NumericMatrix sepFilter(Rcpp::NumericMatrix imgMat, int ddepth, 
+			      Rcpp::NumericMatrix kernelX_, Rcpp::NumericMatrix kernelY_, 
+			      Rcpp::NumericVector anchor_, double delta)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
-    cv::Mat kernelX = convertList_RCPP2CV(kernelX_);
-    cv::Mat kernelY = convertList_RCPP2CV(kernelY_);
+    cv::Mat kernelX = convertMat_RCPP2CV(kernelX_);
+    cv::Mat kernelY = convertMat_RCPP2CV(kernelY_);
     std::vector<int> anchor = as< std::vector<int> >(anchor_);
     cv::sepFilter2D(M, outImg, ddepth, kernelX, kernelY, 
 		    Point(anchor.at(0), anchor.at(1)), delta);
@@ -28,10 +29,10 @@ Rcpp::List sepFilter(Rcpp::List imgList, int ddepth,
 }
 
 
-Rcpp::List sobel(Rcpp::List imgList, int ddepth, int dx, int dy, 
-		 int ksize, double scale, double delta)
+Rcpp::NumericMatrix sobel(Rcpp::NumericMatrix imgMat, int ddepth, int dx, int dy, 
+			  int ksize, double scale, double delta)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     cv::Mat outImg;
     cv::Sobel(M, outImg, ddepth, dx, dy, ksize, scale, delta);
     return (convertMat_CV2RCPP(outImg));

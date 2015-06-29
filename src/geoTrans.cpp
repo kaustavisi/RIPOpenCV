@@ -12,10 +12,10 @@ using namespace cv;
 /****** INTER_LANCZOS4 == 4  ******/
 /*******************************************************/
 
-Rcpp::List imresize(Rcpp::List imgList, Rcpp::NumericVector dsize_, 
+Rcpp::NumericMatrix imresize(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector dsize_, 
 		    double fx, double fy, int interpolation)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     std::vector<int> dsize = as< std::vector<int> >(dsize_);
     cv::Mat outImg;
     resize(M, outImg, Size(dsize.at(0), dsize.at(1)), fx, fy, interpolation);
@@ -23,11 +23,13 @@ Rcpp::List imresize(Rcpp::List imgList, Rcpp::NumericVector dsize_,
 }
 
 
-Rcpp::List affineWarp(Rcpp::List imgList, Rcpp::List tmat_, Rcpp::NumericVector dsize_, 
-		      int flags)
+Rcpp::NumericMatrix affineWarp(Rcpp::NumericMatrix imgMat,
+			       Rcpp::NumericMatrix tmat_,
+			       Rcpp::NumericVector dsize_, 
+			       int flags)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
-    cv::Mat tmat = convertList_RCPP2CV(tmat_);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
     std::vector<int> dsize = as< std::vector<int> >(dsize_);
     cv::Mat outImg;
     warpAffine(M, outImg, tmat, Size(dsize.at(0), dsize.at(1)));
@@ -35,19 +37,20 @@ Rcpp::List affineWarp(Rcpp::List imgList, Rcpp::List tmat_, Rcpp::NumericVector 
 }
 
 
-Rcpp::List affineTransInvert(Rcpp::List tmat_)
+Rcpp::NumericMatrix affineTransInvert(Rcpp::NumericMatrix tmat_)
 {
-    cv::Mat tmat = convertList_RCPP2CV(tmat_);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
     cv::Mat itmat;
     invertAffineTransform(tmat, itmat);
     return(convertMat_CV2RCPP(itmat));
 }
 
-Rcpp::List perspectiveWarp(Rcpp::List imgList, Rcpp::List tmat_, 
-			   Rcpp::NumericVector size_)
+Rcpp::NumericMatrix perspectiveWarp(Rcpp::NumericMatrix imgMat,
+				    Rcpp::NumericMatrix tmat_, 
+				    Rcpp::NumericVector size_)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
-    cv::Mat tmat = convertList_RCPP2CV(tmat_);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat outImg;
     warpPerspective(M, outImg, tmat, Size(size.at(0), size.at(1)));
@@ -55,10 +58,10 @@ Rcpp::List perspectiveWarp(Rcpp::List imgList, Rcpp::List tmat_,
 }
 
 
-Rcpp::List rectSubPix(Rcpp::List imgList, Rcpp::NumericVector patchsize_, 
+Rcpp::NumericMatrix rectSubPix(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector patchsize_, 
 		      Rcpp::NumericVector center_, int patchtype)
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     std::vector<int> patchsize = as< std::vector<int> >(patchsize_);
     std::vector<int> center = as< std::vector<int> >(center_);
     cv::Mat outImg;
@@ -67,7 +70,7 @@ Rcpp::List rectSubPix(Rcpp::List imgList, Rcpp::NumericVector patchsize_,
     return(convertMat_CV2RCPP(outImg));
 }
 
-Rcpp::List getRotMat(Rcpp::NumericVector center_, double angle, double scale)
+Rcpp::NumericMatrix getRotMat(Rcpp::NumericVector center_, double angle, double scale)
 {
     std::vector<int> center = as< std::vector<int> >(center_);
     Point2f centerP(center.at(0), center.at(1));

@@ -3,12 +3,10 @@
 using namespace cv;
 using namespace Rcpp;
 
-
-
-Rcpp::List unsharp(Rcpp::List imgList, Rcpp::NumericVector size_, 
-		   double sigmaX = 0, double sigmaY = 0) 
+Rcpp::NumericMatrix unsharp(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector size_, 
+			    double sigmaX = 0, double sigmaY = 0) 
 {
-    cv::Mat M = convertList_RCPP2CV(imgList);
+    cv::Mat M = convertMat_RCPP2CV(imgMat);
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat outImg;
     GaussianBlur(M, outImg, Size(size.at(0), size.at(1)), sigmaX, sigmaY);
