@@ -7,7 +7,7 @@
 ##' @author Kaustav Nandy
 image.gradient <- function(img)
 {
-    dat <- img$Data
+    dat <- img
     dimg <- dim(dat)
     x.dir <- dat[,-1] - dat[,-dimg[2]]
     y.dir <- dat[-1,] - dat[-dimg[1],]

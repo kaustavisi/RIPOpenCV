@@ -1,7 +1,7 @@
 Package: RIPOpenCV
 Type: Package
 Title: R Image Processing with OpenCV
-Version: 0.4
+Version: 0.5
 Date: 2015-01-29
 Author: Kaustav Nandy <kaustav.ndyy@gmail.com>
 Maintainer: Kaustav Nandy <kaustav.ndyy@gmail.com>
