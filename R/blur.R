@@ -57,13 +57,14 @@ filter.gaussian <- function(img, size, sigmaX = 0, sigmaY = 0)
 ##' @param kern Convolution kernel. A rip object with 1 channel.
 ##' @param anchor  anchor of the kernel that indicates the relative position of a filtered point within the kernel; the anchor should lie within the kernel. Value (-1,-1) means the anchor is an the kernel center.
 ##' @param delta optional value added to the filtered pixels. Default value is 0.
+##' @param borderType FIXME: Write details of border type
 ##' @return convolved rip object
 ##' @author Kaustav Nandy
 
-filter2D <- function(img, depth, kern, anchor=c(-1,-1), delta=0)
+filter2D <- function(img, depth, kern, anchor=c(-1,-1), delta=0, borderType=4)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
-    mblur$filter2d(img, depth, kern, anchor, delta)
+    mblur$filter2d(img, depth, kern, anchor, delta, borderType)
 }
 
 ##' .. content for \description{} (no empty lines) ..

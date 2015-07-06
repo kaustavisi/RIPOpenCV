@@ -46,13 +46,13 @@ Rcpp::NumericMatrix boxBlur(Rcpp::NumericMatrix imgMat,
 /* Apply 2d filter to an image given a kerel */
 Rcpp::NumericMatrix filter2d(Rcpp::NumericMatrix imgMat, int ddepth, 
 			     Rcpp::NumericMatrix kernel_,
-			     IntegerVector anchor_, double delta)
+			     IntegerVector anchor_, double delta, int borderType)
 {
     cv::Mat outImg, M, kernel;
     M = convertMat_RCPP2CV(imgMat);
     kernel = convertMat_RCPP2CV(kernel_);
     std::vector<int> anchor = as< std::vector<int> >(anchor_);
-    filter2D(M, outImg, ddepth, kernel, cvPoint(anchor[0], anchor[1]), delta);
+    filter2D(M, outImg, ddepth, kernel, cvPoint(anchor[0], anchor[1]), delta, borderType);
     return (convertMat_CV2RCPP(outImg));
 }
 
