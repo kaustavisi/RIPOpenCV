@@ -3,6 +3,12 @@
 using namespace cv;
 using namespace Rcpp;
 
+
+int optimatDFTSize(int vecSize)
+{
+    return (cv::getOptimalDFTSize(vecSize));
+}
+
 Rcpp::NumericMatrix DFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
 {
     cv::Mat M = convertMat_RCPP2CV(imgMat);
@@ -13,6 +19,17 @@ Rcpp::NumericMatrix DFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
     // The values are 1, 2, 4, 16, 32
     return convertMat_CV2RCPP(outImg);
 }
+
+Rcpp::NumericMatrix mulspec(Rcpp::NumericMatrix imgMat1, 
+			    Rcpp::NumericMatrix imgMat2, bool conj)
+{
+    cv::Mat M1 = convertMat_RCPP2CV(imgMat1);
+    cv::Mat M2 = convertMat_RCPP2CV(imgMat2);
+    cv::Mat outImg;
+    cv::mulSpectrums(M1, M2, outImg, 0, conj);
+    return convertMat_CV2RCPP(outImg);
+}
+
 
 Rcpp::List dftsep(Rcpp::NumericMatrix imgMat, int flag)
 {
@@ -166,5 +183,7 @@ RCPP_MODULE(Dft)
     function("dftsep", &dftsep, "Discrete Fourier Transformation");
     function("spectrum", &spectrum, "Spectrum");
     function("wienerR", &wienerR, "Wiener Filter");
+    function("mulspec", &mulspec, "Spectrum Multiplication");
+    function("optimatDFTSize", &optimatDFTSize, "get optimal DFT size for Fourier Transformation");
 }
 
