@@ -6,7 +6,7 @@ using namespace Rcpp;
 /* Bilateral filter of an image */
 Rcpp::NumericMatrix bilatFilter(Rcpp::NumericMatrix imgMat, int d, double sigmaCol, double sigmaSpace)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
     bilateralFilter(M, outImg, d, sigmaCol, sigmaSpace);
     return (convertMat_CV2RCPP(outImg));
@@ -14,7 +14,7 @@ Rcpp::NumericMatrix bilatFilter(Rcpp::NumericMatrix imgMat, int d, double sigmaC
 
 Rcpp::NumericMatrix normBoxBlur(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector size_) 
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
     std::vector<int> size = as< std::vector<int> >(size_);
     blur(M, outImg, Size(size.at(0), size.at(1)));
@@ -27,7 +27,7 @@ Rcpp::NumericMatrix gaussianBlur(Rcpp::NumericMatrix imgMat,
 {
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat M, outImg;
-    M = convertMat_RCPP2CV(imgMat);
+    M = convertMat_RCPP2CV(imgMat, 5);
     GaussianBlur(M, outImg, Size(size.at(0), size.at(1)), sigmaX, sigmaY);
     return (convertMat_CV2RCPP(outImg));
 }
@@ -37,7 +37,7 @@ Rcpp::NumericMatrix boxBlur(Rcpp::NumericMatrix imgMat,
 {
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat M, outImg;
-    M = convertMat_RCPP2CV(imgMat);
+    M = convertMat_RCPP2CV(imgMat, 5);
     boxFilter(M, outImg, -1, Size(size.at(0), size.at(1)));
     return (convertMat_CV2RCPP(outImg));
 }
@@ -49,8 +49,8 @@ Rcpp::NumericMatrix filter2d(Rcpp::NumericMatrix imgMat, int ddepth,
 			     IntegerVector anchor_, double delta, int borderType)
 {
     cv::Mat outImg, M, kernel;
-    M = convertMat_RCPP2CV(imgMat);
-    kernel = convertMat_RCPP2CV(kernel_);
+    M = convertMat_RCPP2CV(imgMat, 5);
+    kernel = convertMat_RCPP2CV(kernel_, 5);
     std::vector<int> anchor = as< std::vector<int> >(anchor_);
     filter2D(M, outImg, ddepth, kernel, cvPoint(anchor[0], anchor[1]), delta, borderType);
     return (convertMat_CV2RCPP(outImg));
@@ -62,8 +62,8 @@ Rcpp::NumericMatrix filter2d(Rcpp::NumericMatrix imgMat, int ddepth,
 Rcpp::NumericMatrix conv2(Rcpp::NumericMatrix imgMat, Rcpp::NumericMatrix kernel_, int type = 0)
 {
     cv::Mat outImg, M, kernel, fkern;
-    M = convertMat_RCPP2CV(imgMat);
-    kernel = convertMat_RCPP2CV(kernel_);
+    M = convertMat_RCPP2CV(imgMat, 5);
+    kernel = convertMat_RCPP2CV(kernel_, 5);
     Mat source = M;
     if(type == -1) {
 	source = Mat();
@@ -113,7 +113,7 @@ Rcpp::NumericMatrix getGaborKern(Rcpp::NumericVector ksize_, double sigma, doubl
 Rcpp::NumericMatrix mediBlur(Rcpp::NumericMatrix imgMat, int ksize)
 {
     cv::Mat outImg, M;
-    M = convertMat_RCPP2CV(imgMat);
+    M = convertMat_RCPP2CV(imgMat, 5);
     medianBlur(M, outImg, ksize);
     return (convertMat_CV2RCPP(outImg));
 }
@@ -123,7 +123,7 @@ Rcpp::NumericMatrix mediBlur(Rcpp::NumericMatrix imgMat, int ksize)
 // 		       bool normalize)
 // {
 //     cv::Mat outImg, M;
-//     M = convertMat_RCPP2CV(imgMat);
+//     M = convertMat_RCPP2CV(imgMat, 5);
 //     std::vector<int> ksize = as< std::vector<int> >(ksize_);
 //     std::vector<int> anchor = as< std::vector<int> >(anchor_);
 //     cv::sqrBoxFilter(M, outImg, ddepth, Size(ksize.at(0), ksize.at(1)), Point(anchor.at(0), anchor.at(1)), normalize);

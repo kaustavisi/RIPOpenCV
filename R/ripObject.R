@@ -8,13 +8,12 @@
 ##' @param depth depth of the rip object
 ##' @return converted rip object
 ##' @author Kaustav Nandy
-as.rip <- function(x, channel = 1, type = 5, depth = 5)
+as.rip <- function(x, channel = 1)
 {
     d <- dim(x)
     if (length(d) != 2) stop("x must be a matrix")
     attr(x, "cvdim") <- c(nrow = d[1], ncol = d[2]/channel,
-                          nchannel = channel,
-                          type = type, depth = depth)
+                          nchannel = channel)
     class(x) <- "rip"
     x
 }

@@ -7,23 +7,6 @@ using namespace cv;
 Rcpp::NumericMatrix convertMat_CV2RCPP(cv::Mat M)
 {
     Rcpp::NumericMatrix ans;
-    // if (M.depth() == 0)
-    // 	return convertUCMat_CV2RCPP(M);
-    // else if (M.depth() == 5)
-    // 	return convertFMat_CV2RCPP(M);
-    // else if (M.depth() == 6)
-    // 	return convertDMat_CV2RCPP(M);
-    // else if (M.depth() == 1)
-    // 	return convertCMat_CV2RCPP(M);
-    // else if (M.depth() == 2)
-    // 	return convertUSMat_CV2RCPP(M);
-    // else if (M.depth() == 3)
-    // 	return convertSMat_CV2RCPP(M);
-    // else if (M.depth() == 4)
-    // 	return convertIMat_CV2RCPP(M);
-    // else 
-    // 	::Rf_error("Cannot convert");
-
     switch (M.depth()) {
     case 0: 
 	ans = convertUCMat_CV2RCPP(M);
@@ -51,9 +34,7 @@ Rcpp::NumericMatrix convertMat_CV2RCPP(cv::Mat M)
     }
     ans.attr("cvdim") = NumericVector::create(Rcpp::Named("nrow") = M.rows,
 					      Rcpp::Named("ncol") = M.cols,
-					      Rcpp::Named("nchannel") = M.channels(),
-					      Rcpp::Named("type") = M.type(),
-					      Rcpp::Named("depth") = M.depth());
+					      Rcpp::Named("nchannel") = M.channels());
     ans.attr("class") = "rip";
     return ans;
 }
@@ -173,19 +154,22 @@ Rcpp::NumericMatrix convertDMat_CV2RCPP(cv::Mat M)
 /* Conversion of RCPP NumericMatrix containing allowed type of data to OpenCV matrix */
 /***********************************************************************************/
 /***********************************************************************************/
-cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix x)
+// depth: depth is the depth of the data in the Rcpp matrix. Ideally we are always storing it as
+// Numericmatrix as long as we are inside R. But some functions in OpenCV does not valid for depth=5,
+// that is for double. So we might need to convert the data depth tactically.
+cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix x, int depth)
 {
     std::vector<int> dims = as< std::vector<int> > (x.attr("cvdim"));
     int nRow = dims[0];
     int nCol = dims[1];
     int nChannel = dims[2];
     int effCol = nCol * nChannel;
-    cv::Mat M(nRow, nCol, dims[3]); 
-    if (dims[4] == 0)
+    cv::Mat M(nRow, nCol, depth); 
+    if (depth == 0)
 	convertUCMat_RCPP2CV(x, M, nRow, effCol);
-    else if (dims[4] == 5)
+    else if (depth == 5)
 	convertFMat_RCPP2CV(x, M, nRow, effCol);
-    else if (dims[4] == 6)
+    else if (depth == 6)
 	convertDMat_RCPP2CV(x, M, nRow, effCol);
     else 
 	::Rf_error("Cannot convert");

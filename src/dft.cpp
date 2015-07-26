@@ -11,7 +11,7 @@ int optimatDFTSize(int vecSize)
 
 Rcpp::NumericMatrix DFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg, fImage;
     M.convertTo(fImage, CV_32F);
     cv::dft(fImage, outImg, flags, nonzerorows);
@@ -23,8 +23,8 @@ Rcpp::NumericMatrix DFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
 Rcpp::NumericMatrix mulspec(Rcpp::NumericMatrix imgMat1, 
 			    Rcpp::NumericMatrix imgMat2, bool conj)
 {
-    cv::Mat M1 = convertMat_RCPP2CV(imgMat1);
-    cv::Mat M2 = convertMat_RCPP2CV(imgMat2);
+    cv::Mat M1 = convertMat_RCPP2CV(imgMat1, 5);
+    cv::Mat M2 = convertMat_RCPP2CV(imgMat2, 5);
     cv::Mat outImg;
     cv::mulSpectrums(M1, M2, outImg, 0, conj);
     return convertMat_CV2RCPP(outImg);
@@ -33,7 +33,7 @@ Rcpp::NumericMatrix mulspec(Rcpp::NumericMatrix imgMat1,
 
 Rcpp::List dftsep(Rcpp::NumericMatrix imgMat, int flag)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat cI = getDFT(M, flag);
     cv::Mat pl[2];
     cv::split(cI, pl);
@@ -46,8 +46,8 @@ Rcpp::NumericMatrix wienerR(Rcpp::NumericMatrix blurred,
 			    Rcpp::NumericMatrix sample,
 			    int wnSD)
 {
-    cv::Mat I = convertMat_RCPP2CV(blurred);
-    cv::Mat sam = convertMat_RCPP2CV(sample);
+    cv::Mat I = convertMat_RCPP2CV(blurred, 5);
+    cv::Mat sam = convertMat_RCPP2CV(sample, 5);
     cv::Mat padded = padding(I);
     cv::Mat sampleIm(padded.rows, padded.cols, CV_8U);
     cv::resize(sam, sampleIm, sampleIm.size());
@@ -90,7 +90,7 @@ cv::Mat wiener(cv::Mat I, cv::Mat image_spectrum, int noise_stddev)
 
 Rcpp::NumericMatrix spectrum(Rcpp::NumericMatrix imgMat, int flag)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat cI = getDFT(M, flag);
     cv::Mat spec = getSpectrum(cI);
     return convertMat_CV2RCPP(spec);
@@ -139,7 +139,7 @@ cv::Mat randNoise(cv::Mat I, int stddev)
 
 Rcpp::NumericMatrix IDFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
     idft(M, outImg, flags, nonzerorows);
     Rprintf("%d,%d,%d,%d,%d",DFT_INVERSE,DFT_SCALE,DFT_ROWS,DFT_COMPLEX_OUTPUT,DFT_REAL_OUTPUT);
@@ -148,8 +148,8 @@ Rcpp::NumericMatrix IDFT(Rcpp::NumericMatrix imgMat, int flags, int nonzerorows)
 
 Rcpp::NumericMatrix convolveDFT(Rcpp::NumericMatrix imgMat1, Rcpp::NumericMatrix imgMat2)
 {
-    cv::Mat A = convertMat_RCPP2CV(imgMat1);
-    cv::Mat B = convertMat_RCPP2CV(imgMat2);
+    cv::Mat A = convertMat_RCPP2CV(imgMat1, 5);
+    cv::Mat B = convertMat_RCPP2CV(imgMat2, 5);
     cv::Mat C;
     C.create(abs(A.rows - B.rows) + 1, abs(A.cols - B.cols) + 1, A.type());
     Size dftSize;

@@ -15,7 +15,7 @@ using namespace cv;
 Rcpp::NumericMatrix imresize(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector dsize_, 
 		    double fx, double fy, int interpolation)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     std::vector<int> dsize = as< std::vector<int> >(dsize_);
     cv::Mat outImg;
     resize(M, outImg, Size(dsize.at(0), dsize.at(1)), fx, fy, interpolation);
@@ -28,8 +28,8 @@ Rcpp::NumericMatrix affineWarp(Rcpp::NumericMatrix imgMat,
 			       Rcpp::NumericVector dsize_, 
 			       int flags)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
-    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_, 5);
     std::vector<int> dsize = as< std::vector<int> >(dsize_);
     cv::Mat outImg;
     warpAffine(M, outImg, tmat, Size(dsize.at(0), dsize.at(1)));
@@ -39,7 +39,7 @@ Rcpp::NumericMatrix affineWarp(Rcpp::NumericMatrix imgMat,
 
 Rcpp::NumericMatrix affineTransInvert(Rcpp::NumericMatrix tmat_)
 {
-    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_, 5);
     cv::Mat itmat;
     invertAffineTransform(tmat, itmat);
     return(convertMat_CV2RCPP(itmat));
@@ -49,8 +49,8 @@ Rcpp::NumericMatrix perspectiveWarp(Rcpp::NumericMatrix imgMat,
 				    Rcpp::NumericMatrix tmat_, 
 				    Rcpp::NumericVector size_)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
-    cv::Mat tmat = convertMat_RCPP2CV(tmat_);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat tmat = convertMat_RCPP2CV(tmat_, 5);
     std::vector<int> size = as< std::vector<int> >(size_);
     cv::Mat outImg;
     warpPerspective(M, outImg, tmat, Size(size.at(0), size.at(1)));
@@ -61,7 +61,7 @@ Rcpp::NumericMatrix perspectiveWarp(Rcpp::NumericMatrix imgMat,
 Rcpp::NumericMatrix rectSubPix(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector patchsize_, 
 		      Rcpp::NumericVector center_, int patchtype)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     std::vector<int> patchsize = as< std::vector<int> >(patchsize_);
     std::vector<int> center = as< std::vector<int> >(center_);
     cv::Mat outImg;

@@ -9,7 +9,7 @@
 
 /* main interface */
 Rcpp::NumericMatrix convertMat_CV2RCPP(cv::Mat);
-cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix);
+cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix, int);
 
 /* helper functions */
 Rcpp::NumericMatrix convertUCMat_CV2RCPP(cv::Mat);

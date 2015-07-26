@@ -32,7 +32,7 @@ Rcpp::NumericMatrix importImage(std::vector<std::string> infile, int type = 0)
 
 void writeImage(Rcpp::NumericMatrix imgMat, Rcpp::CharacterVector outFile) 
 {
-    cv::Mat outImg = convertMat_RCPP2CV(imgMat);
+    cv::Mat outImg = convertMat_RCPP2CV(imgMat, 5);
     std::string outfile = as<std::string>(outFile);
     cv::imwrite(outfile, outImg);
     return;

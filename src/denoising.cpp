@@ -6,7 +6,7 @@ using namespace Rcpp;
 Rcpp::NumericMatrix nlmeansDenoising(Rcpp::NumericMatrix imgMat, float h, 
 				     int templeteWindowSize, int searchWindowSize)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
     cv::fastNlMeansDenoising(M, outImg, h, templeteWindowSize, searchWindowSize);
     return (convertMat_CV2RCPP(outImg));
@@ -16,7 +16,7 @@ Rcpp::NumericMatrix nlmeansDenoising(Rcpp::NumericMatrix imgMat, float h,
 Rcpp::NumericMatrix nlmeansDenoisingCol(Rcpp::NumericMatrix imgMat, float h, 
 					int templeteWindowSize, int searchWindowSize)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
     cv::fastNlMeansDenoisingColored(M, outImg, h, templeteWindowSize, searchWindowSize);
     return (convertMat_CV2RCPP(outImg));
