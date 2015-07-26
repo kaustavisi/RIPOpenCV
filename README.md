@@ -8,7 +8,7 @@
 
 **Troubleshoothing**
 
-1. There is a common problem that the installation fails with an error similar to the following:
+- There is a common problem that the installation fails with an error similar to the following:
 
 ```
 libopencv_shape.so.3.0: cannot open shared object file: No such file or directory
@@ -16,4 +16,4 @@ libopencv_shape.so.3.0: cannot open shared object file: No such file or director
 
 This means the loader is failing to find the library location. A possible method of tackling this error is mentioned [here](http://www.eyrie.org/~eagle/notes/rpath.html).
 
-2. All the functions of this package may not work with older versions of OpenCV. 
+- All the functions of this package may not work with older versions of OpenCV. 
