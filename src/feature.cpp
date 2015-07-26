@@ -8,7 +8,7 @@ Rcpp::NumericMatrix cannyEdgeDetector(Rcpp::NumericMatrix imgMat,
 			     double threshold1, double threshold2,
 			     int appertureSize, bool L2Gradient) 
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 0);
     cv::Mat outImg;
     cv::Canny(M, outImg, threshold1, threshold2, appertureSize, L2Gradient);
     return (convertMat_CV2RCPP(outImg));
@@ -19,7 +19,7 @@ Rcpp::NumericMatrix cannyEdgeDetector(Rcpp::NumericMatrix imgMat,
 Rcpp::NumericMatrix cornerEValsAndEVecs(Rcpp::NumericMatrix imgMat,
 			       int blockSize, int kSize)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 0);
     cv::Mat outImg;
     cv::cornerEigenValsAndVecs(M, outImg, blockSize, kSize, BORDER_DEFAULT);
     return (convertMat_CV2RCPP(outImg));
@@ -29,7 +29,7 @@ Rcpp::NumericMatrix cornerEValsAndEVecs(Rcpp::NumericMatrix imgMat,
 Rcpp::NumericMatrix harrisCorner(Rcpp::NumericMatrix imgMat,
 			int blockSize, int kSize, double k)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 0);
     cv::Mat outImg;
     cv::cornerHarris(M, outImg, blockSize, kSize, k);
     return (convertMat_CV2RCPP(outImg));
@@ -39,12 +39,14 @@ Rcpp::NumericMatrix harrisCorner(Rcpp::NumericMatrix imgMat,
 /* Minimum eigen values of gradient matrix for corner detection*/
 Rcpp::NumericMatrix cornerMinEVal(Rcpp::NumericMatrix imgMat, int blockSize, int ksize)
 {
-    cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
+    cv::Mat M = convertMat_RCPP2CV(imgMat, 0);
     cv::Mat outImg(M.rows, M.cols, CV_32FC1);
     cv::cornerMinEigenVal(M, outImg, blockSize, ksize);
     return (convertMat_CV2RCPP(outImg));
 }
 
+
+/* Refines the corner location */
 
 RCPP_MODULE(Feature) 
 {

@@ -6,7 +6,7 @@
 ##' @param dsize two elements vector of output image size; if it equals 0, it is computed from \code{fx} and \code{fy}, and they have to be non-zero
 ##' @param fx scale factor in the horizontal axis
 ##' @param fy scale factor in the vertical axis
-##' @param interp interpolation methods. Possible values are 
+##' @param interpolation interpolation methods. Possible values are 
 ##' \itemize {
 ##'     \item{0}{for nearest neighbor interpolation}
 ##'     \item{1}{for linear interpolation}
@@ -16,10 +16,10 @@
 ##' }
 ##' @return resized rip object
 ##' @author Kaustav Nandy
-imResize <- function(img, dsize, fx, fy, interp)
+resize <- function(img, dsize, fx, fy, interpolation=1)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
-    mgeo$imresize(img, dsize, fx, fy, interp)
+    mgeo$imresize(img, dsize, fx, fy, interpolation)
 }
 
 ##' Applies affine warp to an image
@@ -30,12 +30,15 @@ imResize <- function(img, dsize, fx, fy, interp)
 ##' @param tmat 2x3 transformation matrix (rip object)
 ##' @param size dimension of the output image
 ##' @param flags Interpolation method 
+##' @param borderMode pixel extrapolation method.
 ##' @return rip object after affine warpping
 ##' @author Kaustav Nandy
-wrap.affine <- function(img, tmat, size, flags)
+wrapAffine <- function(img, tmat, size, flags=1, borderMode=4)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
-    mgeo$affineWarp(img, tmat, size, flags)
+    mgeo$affineWarp(img, tmat, size, flags, borderMode)
+    ## FIXME: borderMode == 0 will not work. Need to see how we can incorporate
+    ## borderValue = something in case of constant border
 }
 
 ##' Invert an affine transformation
@@ -45,7 +48,7 @@ wrap.affine <- function(img, tmat, size, flags)
 ##' @param tmat affine transformation matrix (rip object)
 ##' @return Inverse affine transformation matrix as a rip object 
 ##' @author Kaustav Nandy
-invertAffineTrans <- function(tmat)
+invertAffineTransform <- function(tmat)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
     mgeo$affineTransInvert(tmat)
@@ -60,7 +63,7 @@ invertAffineTrans <- function(tmat)
 ##' @param size dimension of the output rip object
 ##' @return transformed rip object of same type as img
 ##' @author Kaustav Nandy
-warp.perspective <- function(img, tmat, size)
+warpPerspective <- function(img, tmat, size)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
     mgeo$perspectiveWarp(img, tmat, size)
@@ -73,13 +76,12 @@ warp.perspective <- function(img, tmat, size)
 ##' @param img rip object
 ##' @param patchSize dimension of the output retcangle rip object patch
 ##' @param center coordinates of the center of the extracted rectangle within the source image
-##' @param patchType depth of the extracted pixels. Negative value means the same depth as \code{img}
-##' @return 
+##' @return rectangular subset of the rip object
 ##' @author Kaustav Nandy
-getRectSubPix <- function(img, patchSize, center, patchType=-1)
+getRectSubPix <- function(img, patchSize, center)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
-    mgeo$rectSubPix(img, patchSize, center, patchType)
+    mgeo$rectSubPix(img, patchSize, center)
 }
 
 
@@ -92,7 +94,7 @@ getRectSubPix <- function(img, patchSize, center, patchType=-1)
 ##' @param scale Isotropic scale factor
 ##' @return 2x3 rip object of affine transformation
 ##' @author Kaustav Nandy
-getRotationMat <- function(center, angle, scale)
+getRotationMat2D <- function(center, angle, scale)
 {
     mgeo <- Module("geoTrans", PACKAGE = "RIPOpenCV")
     mgeo$getRotMat(center, angle, scale)

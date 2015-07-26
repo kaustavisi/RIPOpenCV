@@ -9,8 +9,8 @@
 ##' @param L2Gradient a flag, indicating whether a more accurate L2 norm to be used to calculate the image gradient or a L1 gradient is good enough.
 ##' @return rip object of same size as \code{img} with values 0 and 255. Value 255 marks the edges.(FIXME: check this, whether this is 0 or 255)
 ##' @author Kaustav Nandy
-Canny.EdgeDectector <- function(img, threshold1, threshold2,
-                                appertureSize, L2Gradient)
+Canny <- function(img, threshold1, threshold2,
+                  appertureSize, L2Gradient)
 {
     mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
     mfeature$cannyEdgeDetector(img, threshold1, threshold2,
@@ -42,7 +42,7 @@ cornerEigenValsVecs <- function(img, blocksize, ksize)
 ##' @param k Harris detector free parameter.
 ##' @return rip object with Harris corner detector responses.
 ##' @author Kaustav Nandy
-corner.Harris <- function(img, blocksize, ksize, k)
+cornerHarris <- function(img, blocksize, ksize, k)
 {
     mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
     mfeature$harrisCorner(img, blocksize, ksize, k)
@@ -57,7 +57,7 @@ corner.Harris <- function(img, blocksize, ksize, k)
 ##' @param ksize aperture size of the Sobel operator
 ##' @return Returns the minimum eigen value of the covariance matrix of derivatives.
 ##' @author Kaustav Nandy
-corner.MinEigenVal <- function(img, blocksize, ksize)
+cornerMinEigenVal <- function(img, blocksize, ksize)
 {
     mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
     mfeature$cornerMinEVal(img, blocksize, ksize)

@@ -26,13 +26,13 @@ Rcpp::NumericMatrix imresize(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector dsi
 Rcpp::NumericMatrix affineWarp(Rcpp::NumericMatrix imgMat,
 			       Rcpp::NumericMatrix tmat_,
 			       Rcpp::NumericVector dsize_, 
-			       int flags)
+			       int flags, int borderMode)
 {
     cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat tmat = convertMat_RCPP2CV(tmat_, 5);
     std::vector<int> dsize = as< std::vector<int> >(dsize_);
     cv::Mat outImg;
-    warpAffine(M, outImg, tmat, Size(dsize.at(0), dsize.at(1)));
+    warpAffine(M, outImg, tmat, Size(dsize.at(0), dsize.at(1)), flags, borderMode);
     return(convertMat_CV2RCPP(outImg));
 }
 
@@ -59,14 +59,14 @@ Rcpp::NumericMatrix perspectiveWarp(Rcpp::NumericMatrix imgMat,
 
 
 Rcpp::NumericMatrix rectSubPix(Rcpp::NumericMatrix imgMat, Rcpp::NumericVector patchsize_, 
-		      Rcpp::NumericVector center_, int patchtype)
+		      Rcpp::NumericVector center_)
 {
     cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     std::vector<int> patchsize = as< std::vector<int> >(patchsize_);
     std::vector<int> center = as< std::vector<int> >(center_);
     cv::Mat outImg;
     Point2f centerP(center.at(0), center.at(1));
-    getRectSubPix(M, Size(patchsize.at(0), patchsize.at(1)), centerP, outImg, patchtype);
+    getRectSubPix(M, Size(patchsize.at(0), patchsize.at(1)), centerP, outImg, -1);
     return(convertMat_CV2RCPP(outImg));
 }
 

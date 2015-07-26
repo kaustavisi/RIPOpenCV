@@ -8,8 +8,7 @@
 ##' @param sigmaSpace Filter sigma in the coordinate space. A larger value of the parameter means that farther pixels will influence each other as long as their colors are close enough (see \code{sigmaCol} ). When \code{d}>0 , it specifies the neighborhood size regardless of sigmaSpace . Otherwise, d is proportional to sigmaSpace
 ##' @return Filtered rip object
 ##' @author Kaustav Nandy
-
-filter.bilat <- function(img, d, sigmaCol, sigmaSpace)
+bilateralFilter <- function(img, d, sigmaCol, sigmaSpace, borderType = 4)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
     mblur$bilatFilter(img, d, sigmaCol, sigmaSpace)
@@ -23,11 +22,28 @@ filter.bilat <- function(img, d, sigmaCol, sigmaSpace)
 ##' @param size a vector with two elements consisting of dimension of the blur kernel
 ##' @return blurred rip object
 ##' @author Kaustav Nandy
-
-filter.normBox <- function(img, size)
+blur <- function(img, size, anchor=c(-1, -1), borderType = 4)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
-    mblur$normBoxBlur(img, size)
+    mblur$normBoxBlur(img, size, anchor, borderType)
+}
+
+##' .. content for \description{} (no empty lines) ..
+##'
+##' .. content for \details{} ..
+##' @title Blurs an image using the box filter
+##' @param img rip object with 1 or 3 channels
+##' @param ksize Size of the kernel
+##' @param anchor anchor point; default value c(-1,-1) means that the anchor is at the kernel center.
+##' @param normalize flag, specifying whether the kernel is normalized by its area or not. Default value is TRUE.
+##' @param borderType border mode used to extrapolate pixels outside of the image.
+##' @return output rip object of the same size as \code{img}
+##' @author kaustav nandy
+boxFilter <- function(img, ksize, anchor=c(-1, -1),
+                      normalize=TRUE, borderType=4)
+{
+    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+    mblur$boxBlur(img, ksize, anchor, normalize, borderType)
 }
 
 
@@ -41,10 +57,10 @@ filter.normBox <- function(img, size)
 ##' @param sigmaY Gaussian kernel standard deviation in Y direction. If \code{sigmaY} is 0 it is set to be equal to \code{sigmaX}. If both sigmas are zero, they are computed from \code{size}
 ##' @return 
 ##' @author Kaustav Nandy
-filter.gaussian <- function(img, size, sigmaX = 0, sigmaY = 0)
+GaussianBlur <- function(img, size, sigmaX = 0, sigmaY = 0, borderType = 4)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
-    mblur$gaussianBlur(img, size, sigmaX, sigmaY)
+    mblur$gaussianBlur(img, size, sigmaX, sigmaY, borderType)
 }
 
 
@@ -53,18 +69,16 @@ filter.gaussian <- function(img, size, sigmaX = 0, sigmaY = 0)
 ##' .. content for \details{} ..
 ##' @title 
 ##' @param img rip object of 1 or 3 channels
-##' @param depth desired depth of the output image
 ##' @param kern Convolution kernel. A rip object with 1 channel.
 ##' @param anchor  anchor of the kernel that indicates the relative position of a filtered point within the kernel; the anchor should lie within the kernel. Value (-1,-1) means the anchor is an the kernel center.
 ##' @param delta optional value added to the filtered pixels. Default value is 0.
 ##' @param borderType FIXME: Write details of border type
 ##' @return convolved rip object
 ##' @author Kaustav Nandy
-
-filter2D <- function(img, depth, kern, anchor=c(-1,-1), delta=0, borderType=4)
+filter2D <- function(img, kern, anchor=c(-1,-1), delta=0, borderType=4)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
-    mblur$filter2d(img, depth, kern, anchor, delta, borderType)
+    mblur$filter2d(img, kern, anchor, delta, borderType)
 }
 
 ##' .. content for \description{} (no empty lines) ..
@@ -101,7 +115,7 @@ conv2D <- function(img, kern, type=c("full","valid","same"))
 ##' \item{kernel.y}{rip object of column filter coefficients}
 ##' }
 ##' @author Kaustav Nandy
-getDerivKernel <- function(dx, dy, ksize,
+getDerivKernels <- function(dx, dy, ksize,
                            normalize, ktype)
 {
     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
@@ -170,8 +184,8 @@ medianBlur <- function(img, ksize=3)
 ##' @param normalize 
 ##' @return rip object of same size as \code{img}
 ##' @author Kaustav Nandy
-sqrBoxFilter <- function(img, ddepth, ksize, anchor, normalize=TRUE)
-{
-    mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
-    mblur$sqBoxFilter(img, ddpeth, ksize, anchor, normalize)
-}
+## sqrBoxFilter <- function(img, ddepth, ksize, anchor, normalize=TRUE)
+## {
+##     mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
+##     mblur$sqBoxFilter(img, ddpeth, ksize, anchor, normalize)
+## }
