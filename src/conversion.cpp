@@ -164,7 +164,8 @@ cv::Mat convertMat_RCPP2CV(Rcpp::NumericMatrix x, int depth)
     int nCol = dims[1];
     int nChannel = dims[2];
     int effCol = nCol * nChannel;
-    cv::Mat M(nRow, nCol, depth); 
+    int type = CV_MAKETYPE(depth, nChannel);
+    cv::Mat M(nRow, nCol, type); // FIXME: What is type when we know depth and nChannels?
     if (depth == 0)
 	convertUCMat_RCPP2CV(x, M, nRow, effCol);
     else if (depth == 5)
