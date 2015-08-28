@@ -11,7 +11,10 @@ Rcpp::NumericMatrix copymakeborder(Rcpp::NumericMatrix imgMat,
 {
     cv::Mat M = convertMat_RCPP2CV(imgMat, 5);
     cv::Mat outImg;
-    cv::copyMakeBorder(M, outImg, top, bottom, left, right, borderType);
+    if (borderType == 0)
+        cv::copyMakeBorder(M, outImg, top, bottom, left, right, borderType, Scalar(0));
+    else
+        cv::copyMakeBorder(M, outImg, top, bottom, left, right, borderType);
     return (convertMat_CV2RCPP(outImg));
 }
 
