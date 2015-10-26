@@ -1,6 +1,6 @@
 
 ## mio <- Module("R2R", PACKAGE = "RIPOpenCV")
-## mi <- Module("R2R", PACKAGE = "RIPOpenCV")
+mi <- Module("R2R", PACKAGE = "RIPOpenCV")
 ## mblur <- Module("Blur", PACKAGE = "RIPOpenCV")
 ## mfeature <- Module("Feature", PACKAGE = "RIPOpenCV")
 ## mmorph <- Module("Morph", PACKAGE = "RIPOpenCV")
@@ -14,3 +14,4 @@
 ## munsharpMask <- Module("unsharpMask", PACKAGE = "RIPOpenCV")
 ## mdenoiseEdge <- Module("denoiseEdge", PACKAGE = "RIPOpenCV")
 ## mdenoise <- Module("denoise", PACKAGE = "RIPOpenCV")
+mvideo <- Module("video", PACKAGE = "RIPOpenCV")
