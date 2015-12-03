@@ -14,7 +14,7 @@ print.rip <- function(x, ...)
 }
 
 
-image.rip <- function(x, ..., rescale = FALSE)
+image.rip <- function(x, ..., rescale = TRUE)
 {
     cvdim <- attr(x, "cvdim")
     if (cvdim[3] != 1)
